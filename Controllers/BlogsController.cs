@@ -103,8 +103,22 @@ namespace blogger_cs.Controllers
   }
 
   // TODO put
-
-
+[HttpPut("{id}")]
+[Authorize]
+public async Task<ActionResult<Blog>> Update(int id, [FromBody] Blog update)
+{
+  try
+  {
+      Account account = await HttpContext.GetUserInfoAsync<Account>();
+      update.Id = id;
+      Blog updated = _service.Update(update, account.Id);
+      return Ok(updated);
+  }
+  catch (Exception e)
+  {
+      return BadRequest(e.Message);
+  }
+}
 
 
 

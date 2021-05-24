@@ -66,7 +66,21 @@ public async Task<ActionResult<IEnumerable<Comment>>> GetMyComments()
 
 
 // TODO HttpPut
-
+[HttpPut]
+public async Task<ActionResult<Account>> Update([FromBody] Account update)
+{
+try
+{
+    Account account = await HttpContext.GetUserInfoAsync<Account>();
+    update.Id = account.Id;
+    Account updated = _service.Update(update);
+    return updated;
+}
+catch (Exception e)
+{
+    return BadRequest(e.Message);
+}
+}
 
 
 

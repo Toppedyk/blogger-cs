@@ -48,7 +48,22 @@ namespace blogger_cs.Controllers
       }
     }
 
-    
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Comment>> Update(int id,[FromBody] Comment update)
+    {
+      try
+      {
+          Account account = await HttpContext.GetUserInfoAsync<Account>();
+          update.Id = id;
+          Comment updated = _service.Update(account.Id, update);
+          return updated;
+      }
+      catch (System.Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
 
 
 

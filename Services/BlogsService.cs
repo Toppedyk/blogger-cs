@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using blogger_cs.Models;
 using blogger_cs.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace blogger_cs.Services
 {
@@ -50,6 +52,23 @@ namespace blogger_cs.Services
       {
         throw new Exception("Something's Gone Wrong!");
       }
+    }
+
+    internal Blog Update(Blog update, string id)
+    {
+      Blog original = GetBlogById(update.Id);
+      if(original.CreatorId != id){
+        throw new Exception("You cannot edit another users blog");
+      }
+      original.Title = update.Title.Length > 0 ? update.Title : original.Title;
+      original.Body = update.Body.Length > 0 ? update.Body : original.Body;
+      original.ImgUrl = update.ImgUrl.Length > 0 ? update.ImgUrl : original.ImgUrl;
+      original.Published = update.Published != original.Published ? update.Published : original.Published;
+      if(_repo.Update(original))
+      {
+        return original;
+      }
+      throw new Exception("Something went Wrong");
     }
   }
 }

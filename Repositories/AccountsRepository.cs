@@ -31,5 +31,18 @@ namespace blogger_cs.Repositories
       _db.Execute(sql, userInfo);
       return userInfo;
     }
+
+    internal bool Update(Account original)
+    {
+      string sql = @"
+      UPDATE accounts
+      SET
+      name=@Name,
+      email=@Email,
+      picture=@Picture
+      WHERE id =@Id";
+      int affectedRows = _db.Execute(sql, original);
+      return affectedRows == 1;
+    }
   }
 }

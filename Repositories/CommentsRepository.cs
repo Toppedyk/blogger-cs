@@ -76,6 +76,18 @@ namespace blogger_cs.Repositories
       }, new {id}, splitOn: "id").FirstOrDefault();
     }
 
+    internal bool Update(Comment original)
+    {
+      string sql = @"
+      UPDATE comments
+      SET
+      body=@Body,
+      blog=@Blog
+      WHERE id=@Id";
+      int affectedRows = _db.Execute(sql, original);
+      return affectedRows == 1;
+    }
+
     internal bool DeleteComment(int id)
     {
       string sql = "DELETE FROM comments WHERE id = @id LIMIT 1";

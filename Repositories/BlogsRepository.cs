@@ -82,5 +82,19 @@ namespace blogger_cs.Repositories
       int affectedRows = _db.Execute(sql, new {id});
       return affectedRows == 1;
     }
+
+    internal bool Update(Blog original)
+    {
+      string sql = @"
+      UPDATE blogs
+      SET
+      title=@Title,
+      body=@Body,
+      imgUrl=@ImgUrl,
+      published=@Published
+      WHERE id=@Id";
+      int affectedRows = _db.Execute(sql, original);
+      return affectedRows == 1;
+    }
   }
 }

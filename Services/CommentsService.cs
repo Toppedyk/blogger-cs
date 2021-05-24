@@ -46,5 +46,21 @@ namespace blogger_cs.Services
     {
       return _repo.GetCommentById(id);
     }
+
+    internal Comment Update(string id, Comment update)
+    {
+      Comment original = GetCommentById(update.Id);
+      if(original.CreatorId != id)
+      {
+        throw new Exception("You cannot edit another user's comment");
+      }
+      original.Body = update.Body.Length > 0 ? update.Body : original.Body;
+      original.Blog = update.Blog != original.Blog ? update.Blog : original.Blog;
+      if(_repo.Update(original))
+      {
+        return original;
+      }
+      throw new Exception("Something went Wrong");
+    }
   }
 }

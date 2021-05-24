@@ -32,5 +32,18 @@ namespace blogger_cs.Services
       }
       return account;
     }
+
+    internal Account Update(Account update)
+    {
+      Account original = GetProfileById(update.Id);
+      original.Name = update.Name.Length > 0 ? update.Name : original.Name;
+      original.Email = update.Email.Length > 0 ? update.Email : original.Email;
+      original.Picture = update.Picture.Length > 0 ? update.Picture : original.Picture;
+      if(_repo.Update(original))
+      {
+        return original;
+      }
+      throw new Exception("Something went Wrong!");
+    }
   }
 }
